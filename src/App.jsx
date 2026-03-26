@@ -600,11 +600,12 @@ const CSS = `
     display: grid;
     grid-template-columns: 1fr 260px;
     grid-template-rows: auto 1fr auto;
-    min-height: 100vh;
+    height: 100vh;
     max-width: 1100px;
     margin: 0 auto;
     padding: 28px 32px;
     gap: 20px;
+    overflow: hidden;
   }
 
   .header {
@@ -632,7 +633,7 @@ const CSS = `
     grid-column: 1; grid-row: 2;
     overflow-y: auto;
     padding-right: 16px;
-    max-height: calc(100vh - 260px);
+    min-height: 0;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-border) transparent;
   }
@@ -785,7 +786,15 @@ const CSS = `
   }
   .a-btn.off { opacity: .25; cursor: not-allowed; pointer-events: none; }
 
-  .options { display: flex; flex-direction: column; gap: 2px; animation: fadeUp .25s ease both; padding-bottom: 6px; }
+  .options {
+    display: flex; flex-direction: column; gap: 2px;
+    animation: fadeUp .25s ease both; padding-bottom: 6px;
+    max-height: 40vh; overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-border) transparent;
+  }
+  .options::-webkit-scrollbar { width: 3px; }
+  .options::-webkit-scrollbar-thumb { background: var(--accent-border); border-radius: 2px; }
 
   .opt {
     font-family: var(--mono);
@@ -887,6 +896,7 @@ const CSS = `
       grid-template-rows: auto auto 1fr auto;
       padding: 12px 16px;
       gap: 12px;
+      height: 100vh;
     }
     .header { grid-column: 1; flex-wrap: wrap; gap: 8px; padding-bottom: 10px; }
     .header h1 { font-size: 11px; letter-spacing: 5px; }
@@ -943,7 +953,7 @@ const CSS = `
     .narrative {
       grid-column: 1;
       grid-row: 3;
-      max-height: calc(100vh - 300px);
+      min-height: 0;
       padding-right: 4px;
     }
     .n-text { font-size: 13.5px; line-height: 1.7; }
