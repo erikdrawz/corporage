@@ -47,15 +47,17 @@ const EMAIL_CONTENT = {
 
 // ─── INTRO ────────────────────────────────────────────────────────
 const INTRO_LINES = [
-  { text: "Hétfő.", delay: 1200 },
-  { text: "Reggel 7:00.", delay: 1000 },
-  { text: "", delay: 700 },
-  { text: "Csörög az ébresztő.", delay: 1100 },
-  { text: "Felülről öblítés zaja. Utána dúdolás.", delay: 1200 },
-  { text: "A szomszéd boldog. A szomszéd mindig boldog.", delay: 1500 },
-  { text: "", delay: 600 },
-  { text: "Pittyen a telefon.", delay: 1600 },
-  { text: "Céges email.", delay: 2200 },
+  { text: "Hétfő.", delay: 900 },
+  { text: "Reggel 7:00.", delay: 700 },
+  { text: "", delay: 500 },
+  { text: "Egy ideje már a plafont nézed.", delay: 900 },
+  { text: "Felülről WC öblítés zaja és dúdolás.", delay: 900 },
+  { text: "A szomszéd boldog. A szomszéd mindig boldog.", delay: 1200 },
+  { text: "", delay: 400 },
+  { text: "Pittyen a telefon.", delay: 1200 },
+  { text: "Így messziről céges emailnek tűnik.", delay: 1400 },
+  { text: "", delay: 400 },
+  { text: "A laptopod elé ülsz.", delay: 1600 },
 ];
 
 // ─── SCENES ───────────────────────────────────────────────────────
@@ -89,7 +91,7 @@ const SCENES = {
             showEmail: true,
             setFlags: { emailRead: true },
             afterEmailText: "Kétszer olvasod el, mert az agyad nem hiszi el, amit a szemed lát. Hét év. Kétezerötszáz nap fluoreszens fényben, és ennyit érdemeltél — egy időzített emailt, amit valaki Londonban ütemezett be pénteken, az Earl Grey mellé.\n\nMég a szemedbe se mertek nézni.",
-            hpChange: -30,
+            hpChange: -50,
             nextScene: "email_elolvasva",
           },
         },
@@ -107,7 +109,7 @@ const SCENES = {
           id: "ee_g1", label: "Meredsz magad elé.",
           condition: (s) => !s.flags.lookedAround,
           result: {
-            text: "Próbálsz nyugodt maradni. Nem megy. A gondolataid össze-vissza cikáznak, mint a legyek a konyhai lámpa körül. A szemed végigpásztáz a lakáson — és most először nem a nyomort látod, hanem eszközöket.\n\nBelépőkártya a cipőspolcon. MVP díj a polcon. Power bank a töltőn. Bankkártya a tárcában. Talán kéne magadhoz venni pár dolgot.",
+            text: "Próbálsz nyugodt maradni. Egész jól megy. Boldogabb lennél, ha megengednéd magadnak, hogy igazán dühös légy, de neked persze mindig tudnod kell viselkedni.\n\nA szemed végigpásztáz a lakáson. MVP díj a polcon — vicc. Power bank a töltőn, bankkártya a pulton, hű társaid a mindennapokban. A bankkártya nem fogja sokáig bírni. Sosem bírja sokáig, csak a következő hó elejéig.",
             setFlags: { lookedAround: true },
           },
         },
@@ -164,7 +166,7 @@ const SCENES = {
           id: "ah_g1", label: "Anyádra gondolsz és az elvárásaira.",
           condition: (s) => !s.flags.momThought,
           result: {
-            text: "Anyádra gondolsz. A kérdéseire, amik sosem kérdések, hanem ítéletek kérdőjellel a végén. Mikor veszel lakást. Mikor lesz barátnőd. Lesz-e előléptetés. Miért nem a jogra mentél.\n\nMinden hívás egy teljesítmény-értékelés, amit soha nem fogsz átmenni.",
+            text: "A bátyád klímákat szerel be és sokkal szebben él. Felesége van, két gyerek, családi ház Érden. \"Neked mikor lesznek?\" — kérdezi anyád minden alkalommal, mintha gyereket vennél a boltban.\n\nÉs persze: \"Csak ücsörögsz a gép mögött egész nap és nem értesz semmihez.\" Hát, ebben most már a cég is egyetért vele.",
             setFlags: { momThought: true },
             hpChange: -10,
           },
@@ -214,7 +216,7 @@ const SCENES = {
           id: "bh_g1", label: "A céges iPhone-ra gondolsz.",
           condition: (s) => !s.flags.iphoneThought,
           result: {
-            text: "Mennyire sok erőt adott, hogy végre te is Apple-ös arc lettél. Ingyen iPhone, ingyen AirPods — de ezekért cserébe soha nem fizetned sem kellett volna. Most visszakérik az egészet.",
+            text: "Mennyire sok erőt adott, hogy végre te is Apple-ös arc lettél. Ingyen iPhone, ingyen AirPods — és ezekért egy vasat sem kellett fizetned soha.\n\nMost ugrott minden.",
             setFlags: { iphoneThought: true },
           },
         },
@@ -278,9 +280,9 @@ const SCENES = {
         },
         {
           id: "tl_g2", label: "Arra gondolsz, milyen kapcsolataid voltak a cégnél.",
-          condition: (s) => !s.flags.friendsThought,
+          condition: (s) => s.flags.brigiHandled && !s.flags.friendsThought,
           result: {
-            text: "A söröz​ések. A céges vacsorák, ahol mindig te ültél a szélén. A dúdolás a dohányzóban, amikor Kovács bácsi az irodaszerekről panaszkodott. Azt hitted, ezek barátságok. Terül-e az asztal, ha már nem ülsz mellette?\n\nBrigi már letette. Anya meg... anya. Dani az IT-ről talán. Az egyetlen, aki soha nem úgy beszélt, mintha egy TED Talkot tartana.",
+            text: "A sörözések. A céges utazások, a team buildingek, ahol \"családnak\" hívtátok egymást. A \"fiatal, lendületes csapat\" — ahogy a hirdetésekben írták, és amiben te is hittél egy ideig.\n\nAkkor ez ennyi volt? Már nem is számítasz ezeknek az embereknek? Azt hitted, barátságok, nem előfizetések. De ha nem tudod fizetni a tagsági díjat — ugrottak.",
             setFlags: { friendsThought: true },
           },
         },
@@ -358,46 +360,15 @@ const SCENES = {
             text: "Az előléptetések. A \"Thrilled to announce\" posztok. \"Grateful for this incredible journey.\" Mindenki boldog, mindenki sikeres, mindenki hazudik, és mindenki tudja, hogy mindenki hazudik, de senkit nem érdekel.\n\nEgy régi csoporttársad, aki három tárgyból bukott, most VP valahol. Posztolta, hogy \"hard work pays off.\" Háromszáz like.\n\nValami elszakad benned. Nem drámaian, nem hangosan — inkább úgy, ahogy egy régi kötél engedi el. Csendben. A világ szürkül, a sarkok elmosódnak.\n\nValami nem stimmel. Ez a nap nem így kellett volna végződjön.",
             setFlags: { openedLinkedin: true },
             hpChange: -100,
+            nextScene: "linkedin_halal",
           },
         },
         {
-          id: "tl_t6", label: "Elrakod a belépőkártyát.",
-          condition: (s) => s.flags.lookedAround && !s.inventory.includes("belepokartya"),
+          id: "tl_t6", label: "Megnézed az MVP díjadat a polcon.",
+          condition: (s) => !s.flags.lookedAtMVP,
           result: {
-            text: "Deaktiválták — írják. De mikor csinált a BEC IT-je bármit is időben?",
-            addItem: "belepokartya",
-          },
-        },
-        {
-          id: "tl_t7", label: "Felveszed az MVP díjat.",
-          condition: (s) => s.flags.lookedAround && !s.inventory.includes("mvp_award"),
-          result: {
-            text: "\"Most Valuable Player 2021.\" Három hónap non-stop munka. Kaptál egy trófeát és egy pizzapartyt. A pizza hideg volt.\n\nA trófea viszont nehéz. Ez még hasznos lehet.",
-            addItem: "mvp_award",
-          },
-        },
-        {
-          id: "tl_t8", label: "Elrakod a bankkártyát.",
-          condition: (s) => s.flags.lookedAround && !s.inventory.includes("bankkartya"),
-          result: {
-            text: "Nincs rajta sok. De elég egy kávéra és egy villamosjegyre. Ha meglesz a terv, ennyi elég.",
-            addItem: "bankkartya",
-          },
-        },
-        {
-          id: "tl_t9", label: "Elrakod a power banket.",
-          condition: (s) => s.flags.lookedAround && !s.inventory.includes("powerbank"),
-          result: {
-            text: "Wish, 2022. Három LED-ből kettő világít. Úgy tartja az energiát, ahogy te a méltóságodat — nagyjából, amíg nem terheled.",
-            addItem: "powerbank",
-          },
-        },
-        {
-          id: "tl_t10", label: "Megnézed a telefont. Van egy új üzenet.",
-          condition: (s) => s.inventory.includes("telefon") && !s.flags.daniMessage,
-          result: {
-            text: "Dani az IT-ről írt. \"Hali. Engem is kirúgtak reggel. A talpnyaló Laci persze maradt. Most ő lesz az egyedüli IT-s.\"\n\nDani. A normális arc. Az egyetlen, aki soha nem beszélt corporate bullshitben.",
-            setFlags: { daniMessage: true },
+            text: "\"Most Valuable Player 2021.\" Megemeled. Jó nehéz üveg tömb. Három hónap non-stop munka, egy projekt, amit egyedül húztál ki a szarból. Kaptál érte egy trófeát és egy pizzapartyt.\n\nA pizza hideg volt. A trófea viszont nehéz. Ezt az egy dolgot nem tudják elvenni tőled.",
+            setFlags: { lookedAtMVP: true },
           },
         },
         {
@@ -411,14 +382,6 @@ const SCENES = {
         },
       ],
       beszel: [
-        {
-          id: "tl_b1", label: "Válaszolsz Daninak.",
-          condition: (s) => s.flags.daniMessage && !s.flags.daniReplied,
-          result: {
-            text: "\"Találkozzunk az irodánál egy kicsit később\" — írod.\n\nPár másodperc. Három pont jelenik meg. Aztán: \"Ott leszek. Vigyél cigit ha van.\"\n\nNincs cigid. De ez most nem fontos.",
-            setFlags: { daniReplied: true },
-          },
-        },
         {
           id: "tl_b2", label: "Dúdolni kezdesz.",
           condition: (s) => s.flags.reflected && !s.flags.hummed,
@@ -480,7 +443,7 @@ const SCENES = {
   /* ═══ INDULÁS ELŐTT — UTOLSÓ PILLANAT ═══ */
   indulas_elott: {
     id: "indulas_elott",
-    text: null,
+    text: "Felöltöztél. Mielőtt kilépsz, végignézel a lakáson. Mit viszel magaddal?",
     actions: {
       gondol: [
         {
@@ -494,6 +457,38 @@ const SCENES = {
       ],
       beszel: [],
       tesz: [
+        {
+          id: "ie_t_mvp", label: "Magadhoz veszed az MVP díjat.",
+          condition: (s) => !s.inventory.includes("mvp_award"),
+          result: {
+            text: "Nehéz üveg tömb. Az egyetlen fizikai bizonyíték, hogy valamikor értél valamit ennek a cégnek. Most leginkább súlyos tárgyként lehet hasznos.",
+            addItem: "mvp_award",
+          },
+        },
+        {
+          id: "ie_t_kartya", label: "Zsebre rakod a belépőkártyát.",
+          condition: (s) => !s.inventory.includes("belepokartya"),
+          result: {
+            text: "Deaktiválták — írták az emailben. De mikor csinált a BEC IT-je bármit is időben?",
+            addItem: "belepokartya",
+          },
+        },
+        {
+          id: "ie_t_bank", label: "Elrakod a bankkártyát.",
+          condition: (s) => !s.inventory.includes("bankkartya"),
+          result: {
+            text: "Van rajta valami. Nem sok, de elég egy villamosjegyre és egy kávéra. A nagyvonalú utolsó napod.",
+            addItem: "bankkartya",
+          },
+        },
+        {
+          id: "ie_t_pb", label: "Felmarkolod a power banket.",
+          condition: (s) => !s.inventory.includes("powerbank"),
+          result: {
+            text: "Wish, 2022. Három LED-ből kettő világít. Úgy tartja az energiát, ahogy te a méltóságodat — nagyjából, amíg nem terheled túl.",
+            addItem: "powerbank",
+          },
+        },
         {
           id: "ie_t1", label: "Kilépsz az utcára.",
           condition: (s) => s.flags.dressed,
@@ -511,6 +506,35 @@ const SCENES = {
     id: "outro_lakas",
     text: "A lépcsőházban a neon fele nem működik. A postaládádból kilóg egy Tesco szórólap — \"Minden héten alacsony árak!\" Igen. Ezt érzed te is.\n\nA november arcba csap a kapualjban. A Dózsa György út szürke és közönyös, mint mindig. A villamosmegálló felé indulsz. A sínek úgy csillognak a nedves aszfalton, mint valami ígéret, ami sehová nem vezet.\n\nHúsz perc villamos. Ha minden jól megy.\n\nDe mikor ment bármi jól.\n\n▪ FOLYTATÁS HAMAROSAN ▪",
     actions: null,
+  },
+
+  /* ═══ LINKEDIN HALÁL ═══ */
+  linkedin_halal: {
+    id: "linkedin_halal",
+    text: null,
+    actions: {
+      gondol: [
+        {
+          id: "lh_g1", label: "xxxxxzzzazzyyzí",
+          condition: () => true,
+          result: { nextScene: "loop_reset", text: null },
+        },
+      ],
+      beszel: [
+        {
+          id: "lh_b1", label: "xxxxxzzzazzyyzí",
+          condition: () => true,
+          result: { nextScene: "loop_reset", text: null },
+        },
+      ],
+      tesz: [
+        {
+          id: "lh_t1", label: "xxxxxzzzazzyyzí",
+          condition: () => true,
+          result: { nextScene: "loop_reset", text: null },
+        },
+      ],
+    },
   },
 
   /* ═══ LOOP RESET (LinkedIn trigger) ═══ */
@@ -929,7 +953,7 @@ function Sidebar({ hp, maxHp, inventory, flags }) {
 // ─── MAIN ─────────────────────────────────────────────────────────
 
 const INIT = {
-  hp: 80, maxHp: 100,
+  hp: 100, maxHp: 100,
   inventory: [],
   flags: {},
   scene: "intro",
@@ -947,6 +971,7 @@ const LOCATIONS = {
   oltozes: "Garzon — Budapest, XIII.",
   indulas_elott: "Garzon — Budapest, XIII.",
   outro_lakas: "Dózsa György út",
+  linkedin_halal: "???",
   loop_reset: "???",
 };
 
@@ -971,30 +996,20 @@ export default function CorpoRage() {
     if (narRef.current) narRef.current.scrollTop = narRef.current.scrollHeight;
   }, [st.log]);
 
-  // Check for LinkedIn loop reset
-  useEffect(() => {
-    if (st.hp <= 0 && st.flags.openedLinkedin && st.scene !== "loop_reset" && st.scene !== "intro") {
-      const t = setTimeout(() => {
-        setSt(prev => {
-          const log = [...prev.log];
-          log.push({ type: "div" });
-          log.push({ type: "nar", text: SCENES.loop_reset.text });
-          return { ...prev, scene: "loop_reset", log, activeAction: null };
-        });
-      }, 1500);
-      return () => clearTimeout(t);
-    }
-  }, [st.hp, st.flags.openedLinkedin, st.scene]);
-
   // After loop reset text is shown, restart the game after a pause
   useEffect(() => {
     if (st.scene === "loop_reset") {
       const t = setTimeout(() => {
         setSt({
           ...INIT,
-          scene: "email_megjon",
+          hp: 50,
+          scene: "email_elolvasva",
+          flags: { emailRead: true },
           log: [
-            { type: "nar", text: "Csörög az ébresztő. Hétfő. Reggel 7:00.\n\nFelülről öblítés zaja. Dúdolás. Ugyanaz a szám.\n\nA telefon pittyen. Céges email.\n\nDe most már tudod, mi van benne." },
+            { type: "nar", text: "Csörög az ébresztő. Hétfő. Reggel 7:00.\n\nFelülről öblítés zaja. Dúdolás. Ugyanaz a szám.\n\nA telefon pittyen. Céges email. De most már tudod, mi van benne." },
+            { type: "div" },
+            { type: "email" },
+            { type: "res", text: "Ugyanaz az email. Ugyanazok a szavak. De most már nem fáj annyira. Inkább dühít." },
           ],
         });
       }, 6000);
@@ -1004,8 +1019,15 @@ export default function CorpoRage() {
 
   const startGame = useCallback(() => {
     setSt(s => ({
-      ...s, scene: "email_megjon",
-      log: [{ type: "nar", text: SCENES.email_megjon.text }],
+      ...s,
+      scene: "email_elolvasva",
+      hp: 50,
+      flags: { ...s.flags, emailRead: true },
+      log: [
+        { type: "email" },
+        { type: "res", text: "Kétszer olvasod el, mert az agyad nem hiszi el, amit a szemed lát. Hét év. Kétezerötszáz nap fluoreszens fényben, és ennyit érdemeltél — egy időzített emailt, amit valaki Londonban ütemezett be pénteken, az Earl Grey mellé.\n\nMég a szemedbe se mertek nézni." },
+        { type: "hp", amount: -50 },
+      ],
     }));
   }, []);
 
@@ -1076,7 +1098,7 @@ export default function CorpoRage() {
               <div key={i} className={`intro-ln ${l.text === "" ? "blank" : ""}`}>{l.text}</div>
             ))}
           </div>
-          {introDone && <button className="start-btn" onClick={startGame}>Folytatás</button>}
+          {introDone && <button className="start-btn" onClick={startGame}>Megnyitod az emailt</button>}
         </div>
       </>
     );
