@@ -15,9 +15,13 @@ const ITEMS = {
     id: "belepokartya", name: "Belépőkártya", icon: "🪪",
     desc: "Deaktiválták. Olyan, mint te. Még megvan, de már nem számít.", type: "key",
   },
-  telefon: {
-    id: "telefon", name: "Saját telefon", icon: "📱",
-    desc: "Repedt kijelző, repedt élet. Legalább ez még működik.", type: "utility",
+  iphone: {
+    id: "iphone", name: "Céges iPhone", icon: "📱",
+    desc: "iPhone 14 Pro. A cég fizette. Te meg fizettél a lelkeddel érte.", type: "utility",
+  },
+  xiaomi: {
+    id: "xiaomi", name: "Saját Xiaomi", icon: "📱",
+    desc: "Repedt kijelző, repedt élet. De legalább ez tényleg a tiéd.", type: "utility",
   },
   powerbank: {
     id: "powerbank", name: "Power Bank", icon: "🔋",
@@ -133,11 +137,11 @@ const SCENES = {
           },
         },
         {
-          id: "ee_t3", label: "Magadhoz veszed a telefonod.",
-          condition: (s) => s.flags.lookedAround && !s.inventory.includes("telefon"),
+          id: "ee_t3", label: "Magadhoz veszed a céges iPhone-t.",
+          condition: (s) => s.flags.lookedAround && !s.inventory.includes("iphone"),
           result: {
-            text: "A személyes Xiaomi. Repedt kijelző. A céges telefon már halott — próbáltad, nem megy. Legalább ez a készülék nem hagyott cserben.",
-            addItem: "telefon",
+            text: "Az iPhone 14 Pro. A cég fizette, te meg cserébe non-stop elérhető voltál rajta. Éjjel-nappal. Hétvégén. Szabadságon. Most legalább az emailt ezen is megnézheted — bár nem biztos, hogy akarod.\n\nDe hátha hív valaki, aki tud valamit.",
+            addItem: "iphone",
             nextScene: "anya_hiv",
           },
         },
@@ -267,7 +271,7 @@ const SCENES = {
   /* ═══ FÁZIS 5: TELEFON LENT — MÚLT ÁTGONDOLVA ═══ */
   telefon_lent: {
     id: "telefon_lent",
-    text: "Leteszed a telefont. A lakás csendes. A szomszéd is elhallgatott végre. Csak te vagy és a gondolataid.",
+    text: "Leteszed a telefont. A lakás csendes. A szomszéd is elhallgatott végre.\n\nAztán vibráció. Az iPhone kijelzőjén egy üzenet: \"Az eszközt a szervezet törölte. Kérjük, adja le a legközelebbi irodában.\"\n\nA kijelző elsötétül. A háttérkép — amit soha nem cseréltél le az alapértelmezettről — eltűnik. Annyi.\n\nMost már tényleg csak te vagy és a gondolataid.",
     actions: {
       gondol: [
         {
@@ -314,12 +318,22 @@ const SCENES = {
           id: "tl_g6", label: "Fantáziálsz a méltó büntetésről.",
           condition: (s) => s.flags.revengeThought && !s.flags.planThought,
           result: {
-            text: "Emlékszel, hogy ma délután lesz egy town hall meeting, ahová jön Hegyes brit főnöke is. Jönnek elmagyarázni, hogy ami történt, miért a világ legjobb dolga.\n\nVeled már nem számoltak a közönségben.\n\nDe mi van, ha mégis ott leszel?",
+            text: "Hegyesnek legalább úgy kell megszégyenülnie, mint neked. De nem négyszemközt. Nem egy emailben, amit senki nem lát. Mindenki előtt. A kollégák előtt. A főnöke előtt. Úgy, hogy utána ne tudjon a folyosón végigmenni anélkül, hogy mindenki elhallgatna, amikor meglátja.\n\nEmlékszel, hogy ma délután town hall meeting lesz. Hegyes brit főnöke is jön. Az egész budapesti iroda ott lesz — legalábbis aki maradt.\n\nMég nem tudod, hogyan fogod megcsinálni. De ilyen elhivatott talán még sosem voltál.",
             setFlags: { planThought: true },
           },
         },
       ],
       tesz: [
+        {
+          id: "tl_t0", label: "Megkeresed a saját telefonod.",
+          condition: (s) => !s.inventory.includes("xiaomi") && !s.flags.foundXiaomi,
+          result: {
+            text: "A céges iPhone halott. De valahol itt kell lennie a saját Xiaomidnak... Az éjjeliszekrény mögé csúszott, a töltőkábel végén, mint valami elfelejtett háziállat.\n\nRepedt kijelző. Három éve nem frissítetted a szoftverét. De bekapcsol, és van rajta térerő. Ez most a te telefonod. Az egyetlen, ami tényleg a tiéd.",
+            addItem: "xiaomi",
+            removeItem: "iphone",
+            setFlags: { foundXiaomi: true },
+          },
+        },
         {
           id: "tl_t1", label: "Elkezdesz YouTube-ot nézni.",
           condition: (s) => !s.flags.watchedYT,
