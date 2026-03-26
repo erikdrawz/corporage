@@ -870,12 +870,112 @@ const CSS = `
     100% { opacity:1; transform:scale(1); }
   }
 
+  /* ── SIDEBAR MOBILE TOGGLE ── */
+  .sb-always {
+    display: contents;
+  }
+  .sb-toggle {
+    display: none;
+  }
+  .sb-collapsible {
+    display: contents;
+  }
+
   @media (max-width: 800px) {
-    .game-wrap { grid-template-columns: 1fr; padding: 16px; }
-    .sidebar { grid-column: 1; grid-row: auto; flex-direction: row; flex-wrap: wrap; }
-    .sb-section { flex: 1; min-width: 200px; }
-    .action-bar { grid-column: 1; }
-    .header { grid-column: 1; flex-wrap: wrap; }
+    .game-wrap {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto 1fr auto;
+      padding: 12px 16px;
+      gap: 12px;
+    }
+    .header { grid-column: 1; flex-wrap: wrap; gap: 8px; padding-bottom: 10px; }
+    .header h1 { font-size: 11px; letter-spacing: 5px; }
+    .header .loc { font-size: 9px; }
+    .header .clock { font-size: 9px; }
+
+    .sidebar {
+      grid-column: 1;
+      grid-row: 2;
+      flex-direction: column;
+      gap: 0;
+      background: var(--bg2);
+      border: 1px solid var(--accent-border);
+      border-radius: 4px;
+      padding: 10px 14px;
+    }
+    .sb-always {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sb-always .sb-section {
+      flex: 1;
+      margin-bottom: 0;
+    }
+    .sb-always .sb-section h3 { margin-bottom: 6px; }
+    .sb-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px; height: 32px;
+      background: transparent;
+      border: 1px solid var(--accent-border);
+      border-radius: 3px;
+      color: var(--accent);
+      font-size: 14px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all .15s ease;
+    }
+    .sb-toggle:hover { background: var(--accent-faint); }
+    .sb-collapsible {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--accent-border);
+      margin-top: 10px;
+    }
+    .sidebar.mobile-open .sb-collapsible {
+      display: flex;
+    }
+
+    .narrative {
+      grid-column: 1;
+      grid-row: 3;
+      max-height: calc(100vh - 300px);
+      padding-right: 4px;
+    }
+    .n-text { font-size: 13.5px; line-height: 1.7; }
+    .n-text.sys { font-size: 10px; }
+
+    .email { padding: 16px; }
+    .email-body p { font-size: 12.5px; line-height: 1.6; }
+    .email-from { font-size: 11px; }
+    .email-sig { font-size: 10px; }
+
+    .action-bar { grid-column: 1; grid-row: 4; padding-top: 10px; }
+    .action-btns { gap: 6px; margin-bottom: 10px; }
+    .a-btn {
+      font-size: 12px; padding: 9px 16px;
+      min-width: 0; flex: 1; text-align: center;
+      letter-spacing: 0.5px;
+    }
+    .opt { font-size: 12px; padding: 8px 12px; }
+    .inv-grid { grid-template-columns: repeat(4, 1fr); gap: 5px; }
+    .inv-slot { font-size: 16px; }
+    .pickup { font-size: 10px; }
+    .hp-delta { font-size: 10px; }
+  }
+
+  /* ── INTRO MOBILE ── */
+  @media (max-width: 800px) {
+    .intro { padding: 20vh 24px 40px; }
+    .intro-title { font-size: 28px; letter-spacing: 8px; }
+    .intro-sub { font-size: 10px; letter-spacing: 3px; margin-bottom: 36px; }
+    .intro-lines { min-width: 0; width: 100%; margin-bottom: 36px; min-height: 220px; }
+    .intro-ln { font-size: 13px; }
+    .start-btn { font-size: 11px; padding: 12px 28px; letter-spacing: 3px; }
   }
 `;
 
@@ -923,6 +1023,7 @@ function InvSlot({ item, hovered, onHover }) {
 
 function Sidebar({ hp, maxHp, inventory, flags }) {
   const [hov, setHov] = useState(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const slots = [...inventory];
   while (slots.length < 8) slots.push(null);
 
@@ -933,31 +1034,38 @@ function Sidebar({ hp, maxHp, inventory, flags }) {
   ];
 
   return (
-    <div className="sidebar">
-      <div className="sb-section">
-        <h3>Önbecsülés</h3>
-        <div className="hp-bar-wrap">
-          <div className="hp-fill" style={{ width: `${(hp/maxHp)*100}%` }} />
+    <div className={`sidebar ${mobileOpen ? "mobile-open" : ""}`}>
+      <div className="sb-always">
+        <div className="sb-section">
+          <h3>Önbecsülés</h3>
+          <div className="hp-bar-wrap">
+            <div className="hp-fill" style={{ width: `${(hp/maxHp)*100}%` }} />
+          </div>
+          <div className="hp-num">{hp} / {maxHp}</div>
         </div>
-        <div className="hp-num">{hp} / {maxHp}</div>
+        <button className="sb-toggle" onClick={() => setMobileOpen(!mobileOpen)}>
+          {mobileOpen ? "▴" : "▾"}
+        </button>
       </div>
-      <div className="sb-section">
-        <h3>Tárgyak</h3>
-        <div className="inv-grid">
-          {slots.map((item, i) => (
-            <InvSlot key={i} item={item} hovered={hov} onHover={setHov} />
-          ))}
+      <div className="sb-collapsible">
+        <div className="sb-section">
+          <h3>Tárgyak</h3>
+          <div className="inv-grid">
+            {slots.map((item, i) => (
+              <InvSlot key={i} item={item} hovered={hov} onHover={setHov} />
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="sb-section">
-        <h3>Feladatok</h3>
-        <div className="status-list">
-          {statuses.map((s, i) => (
-            <div key={i} className="status-item">
-              <span className={`dot ${s.on ? "on" : ""}`} />
-              {s.label}
-            </div>
-          ))}
+        <div className="sb-section">
+          <h3>Feladatok</h3>
+          <div className="status-list">
+            {statuses.map((s, i) => (
+              <div key={i} className="status-item">
+                <span className={`dot ${s.on ? "on" : ""}`} />
+                {s.label}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -1006,8 +1114,16 @@ export default function CorpoRage() {
     }
   }, [introStep, st.scene]);
 
+  const prevLogLen = useRef(0);
   useEffect(() => {
-    if (narRef.current) narRef.current.scrollTop = narRef.current.scrollHeight;
+    if (narRef.current && st.log.length > prevLogLen.current) {
+      const blocks = narRef.current.querySelectorAll('.n-block');
+      const newBlock = blocks[prevLogLen.current];
+      if (newBlock) {
+        newBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    prevLogLen.current = st.log.length;
   }, [st.log]);
 
   // After loop reset text is shown, restart the game after a pause
